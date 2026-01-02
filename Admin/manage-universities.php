@@ -61,8 +61,8 @@ require '../backend/db.php';
                                 echo "<td><strong>".htmlspecialchars($uni['UniName'])."</strong></td>";
                                 echo "<td>".htmlspecialchars($uni['Location'])."</td>";
                                 echo "<td>
-                                        <button class='btn btn-sm btn-secondary'>Edit</button>
-                                        <button class='btn btn-sm btn-danger'>Delete</button>
+                                        <a href='edit-university.php?id=".htmlspecialchars($uni['UniID'])."' class='btn btn-sm btn-secondary'>Edit</a>
+                                        <a href='delete-university.php?id=".htmlspecialchars($uni['UniID'])."' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete ".htmlspecialchars($uni['UniName'], ENT_QUOTES)."?\");'>Delete</a>
                                       </td>";
                                 echo "</tr>";
                             }
