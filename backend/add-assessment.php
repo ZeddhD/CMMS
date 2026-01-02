@@ -29,19 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type           = $_POST['type'];
     $title          = $_POST['title'];
     $max_marks      = $_POST['max_marks'];
-    $weight         = $_POST['weight'];
+    $weight         = 0; // Default weight to 0 if not provided
     $due_date       = $_POST['due_date'];
-    $due_time       = $_POST['due_time'];
+    $due_time       = $_POST['due_time'] ?? null; // Optional for quizzes
     $status         = $_POST['status'];
     $is_mandatory   = $_POST['mandatory'];
     $marks_obtained = $_POST['marks_obtained'] ?? null;
 
-    if (!$type || !$title || !$max_marks || !$weight || !$due_date || !$due_time || !$status || $is_mandatory === '') {
-    if (!$type || !$title || !$max_marks || !$weight || !$due_date || !$due_time || !$status || $is_mandatory === '') {
-        header("Location: ../assessment.html?error=missing_fields");
+    if (!$type || !$title || !$max_marks || !$due_date || !$status || $is_mandatory === '') {
+        header("Location: ../student-dashboard.php?error=missing_fields");
         exit;
     }
-    }
+
 
     $stmt = $pdo->prepare("
         INSERT INTO ASSESSMENT 
@@ -62,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $marks_obtained
     ]);
 
-    header("Location: view-progress.php?course_code=" . urlencode($course_code) . "&course_title=" . urlencode($course_title) . "&updated=1");
+    header("Location: ../course-details.php?enrollment_id=$enrollment_id");
     exit;
 } else {
     echo "Invalid request.";

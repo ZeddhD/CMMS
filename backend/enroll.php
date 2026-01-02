@@ -1,65 +1,65 @@
 <?php
-require 'db.php';
 session_start();
+require 'db.php';
 
-$student_id = $_SESSION['user_id'] ?? null;
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../login.php");
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $course_code      = trim($_POST['course_code'] ?? '');
-    $course_title     = trim($_POST['course_title'] ?? '');
-    $semester         = $_POST['semester'] ?? '';
-    $total_quiz       = $_POST['total_quiz'] ?? '';
-    $total_assignment = $_POST['total_assignment'] ?? '';
-    $best_of_quiz     = $_POST['best_of_quiz'] ?? '';
+    $student_id = $_SESSION['student_id'];
+    $course_code = trim($_POST['course_code'] ?? '');
+    $course_title = trim($_POST['course_title'] ?? '');
+    $semester = trim($_POST['semester'] ?? 'Fall 2025');
+    $total_quiz = intval($_POST['total_quiz'] ?? 4);
+    $total_assignment = intval($_POST['total_assignment'] ?? 3);
+    $best_of_quiz = intval($_POST['best_of_quiz'] ?? 3);
 
-    if (!$student_id || !$course_code || !$semester || !$total_quiz || !$total_assignment || !$best_of_quiz) {
-    if (!$student_id || !$course_code || !$semester || !$total_quiz || !$total_assignment || !$best_of_quiz) {
-        header("Location: ../enroll.html?error=missing_fields");
-        exit;
+    if (empty($course_code) || empty($course_title)) {
+        header("Location: ../enroll.php?error=missing_fields");
+        exit();
     }
-    }
 
-    // Use course_title if provided, else use course_code as title
-    $course_title = $course_title ?: $course_code;
+    // Get student's university to associate the new course correctly
+    $stmt = $pdo->prepare("SELECT UniID FROM STUDENT WHERE StudentID = ?");
+    $stmt->execute([$student_id]);
+    $student = $stmt->fetch();
+    $uni_id = $student['UniID'] ?? null;
 
-    // ✅ Check if course already exists
-    $stmt = $pdo->prepare("SELECT CourseID FROM COURSE WHERE CourseCode = ? AND CourseTitle = ?");
-    $stmt->execute([$course_code, $course_title]);
+    // Check if course exists by Code
+    $stmt = $pdo->prepare("SELECT CourseID FROM COURSE WHERE CourseCode = ?");
+    $stmt->execute([$course_code]);
     $course = $stmt->fetch();
 
-    // ✅ If not found, insert it
-    if (!$course) {
-        $insert = $pdo->prepare("INSERT INTO COURSE (CourseCode, CourseTitle) VALUES (?, ?)");
-        $insert->execute([$course_code, $course_title]);
-        $course_id = $pdo->lastInsertId();
-    } else {
+    if ($course) {
         $course_id = $course['CourseID'];
+    } else {
+        // Create new course
+        $stmt = $pdo->prepare("INSERT INTO COURSE (CourseCode, CourseTitle, UniID) VALUES (?, ?, ?)");
+        $stmt->execute([$course_code, $course_title, $uni_id]);
+        $course_id = $pdo->lastInsertId();
     }
 
-    // Defaults
-    $quiz_done = 0;
-    $assignment_done = 0;
+    // Check if already enrolled
+    $stmt = $pdo->prepare("SELECT EnrollmentID FROM ENROLLMENT WHERE StudentID = ? AND CourseID = ?");
+    $stmt->execute([$student_id, $course_id]);
+    if ($stmt->fetch()) {
+        header("Location: ../enroll.php?error=already_enrolled");
+        exit();
+    }
 
-    // ✅ Enroll student in course
+    // Create enrollment
     $stmt = $pdo->prepare("
-        INSERT INTO ENROLLMENT 
-        (StudentID, CourseID, Semester, BestOfQuizCount, TotalQuizPlanned, TotalAssignmentPlanned, QuizCompletedCount, AssignmentCompletedCount)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO ENROLLMENT (StudentID, CourseID, Semester, BestOfQuizCount, TotalQuizPlanned, TotalAssignmentPlanned, QuizCompletedCount, AssignmentCompletedCount)
+        VALUES (?, ?, ?, ?, ?, ?, 0, 0)
     ");
+    $stmt->execute([$student_id, $course_id, $semester, $best_of_quiz, $total_quiz, $total_assignment]);
 
-    $stmt->execute([
-        $student_id,
-        $course_id,
-        $semester,
-        $best_of_quiz,
-        $total_quiz,
-        $total_assignment,
-        $quiz_done,
-        $assignment_done
-    ]);
-
-    header("Location: ../student-dashboard.php");
-    exit;
+    header("Location: ../student-dashboard.php?enrolled=1");
+    exit();
 } else {
-    echo "Invalid request.";
+    header("Location: ../enroll.php");
+    exit();
 }
+?>

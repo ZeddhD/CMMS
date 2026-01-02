@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -285,8 +286,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
         }
 
         .card-1 {
@@ -302,8 +310,15 @@
         }
 
         @keyframes floatCenter {
-            0%, 100% { transform: translate(-50%, -50%); }
-            50% { transform: translate(-50%, calc(-50% - 15px)); }
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%);
+            }
+
+            50% {
+                transform: translate(-50%, calc(-50% - 15px));
+            }
         }
 
         .card-icon {
@@ -360,6 +375,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -730,6 +746,7 @@
                 opacity: 0;
                 transform: translateX(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -825,18 +842,19 @@
         }
     </style>
 </head>
+
 <body>
     <!-- NAVIGATION -->
     <header>
-        <div class="header-container">
+        <div class="nav-container">
             <a href="index.html" class="logo">CMMS</a>
             <nav>
                 <ul class="nav-links">
                     <li><a href="#features">Features</a></li>
                     <li><a href="#benefits">Benefits</a></li>
                     <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html" class="cta-btn">Get Started</a></li>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="register.php" class="cta-btn">Get Started</a></li>
                 </ul>
             </nav>
         </div>
@@ -849,15 +867,16 @@
                 Master Your <span class="gradient">Academic Journey</span>
             </h1>
             <p>
-                A powerful tool to manage your classes, quizzes, assignments, and routines — all in one intelligent dashboard. Stay organized, meet deadlines, and focus on what matters: learning.
+                A powerful tool to manage your classes, quizzes, assignments, and routines — all in one intelligent
+                dashboard. Stay organized, meet deadlines, and focus on what matters: learning.
             </p>
             <div class="hero-buttons">
-                <button class="btn btn-primary">
+                <a href="register.php" class="btn btn-primary">
                     ✨ Start for Free
-                </button>
-                <button class="btn btn-secondary">
+                </a>
+                <a href="#" class="btn btn-secondary">
                     📹 Watch Demo
-                </button>
+                </a>
             </div>
         </div>
 
@@ -894,14 +913,16 @@
             <div class="feature-card">
                 <div class="feature-icon">📝</div>
                 <h3>Course Enrollment</h3>
-                <p>Easily enroll in courses, set up quizzes, assignments, and track your academic progress with intuitive controls.</p>
+                <p>Easily enroll in courses, set up quizzes, assignments, and track your academic progress with
+                    intuitive controls.</p>
                 <span class="arrow">Learn more →</span>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">📅</div>
                 <h3>Schedule Management</h3>
-                <p>Manage your class routines with detailed session information and download printable schedules on demand.</p>
+                <p>Manage your class routines with detailed session information and download printable schedules on
+                    demand.</p>
                 <span class="arrow">Learn more →</span>
             </div>
 
@@ -915,7 +936,8 @@
             <div class="feature-card">
                 <div class="feature-icon">📂</div>
                 <h3>Resource Library</h3>
-                <p>Upload and share study materials, add assessments, and organize everything in a centralized dashboard.</p>
+                <p>Upload and share study materials, add assessments, and organize everything in a centralized
+                    dashboard.</p>
                 <span class="arrow">Learn more →</span>
             </div>
 
@@ -929,7 +951,8 @@
             <div class="feature-card">
                 <div class="feature-icon">🔐</div>
                 <h3>Secure & Private</h3>
-                <p>Enterprise-grade security ensures your academic data and assignments remain protected at all times.</p>
+                <p>Enterprise-grade security ensures your academic data and assignments remain protected at all times.
+                </p>
                 <span class="arrow">Learn more →</span>
             </div>
         </div>
@@ -980,33 +1003,37 @@
     <section class="cta-section">
         <h2>Ready to Transform Your Academic Life?</h2>
         <p>Join thousands of students who are already managing their courses more effectively</p>
-        <button class="btn btn-primary">Get Started Now</button>
+        <a href="register.php" class="btn btn-primary">Get Started Now</a>
     </section>
 
     <!-- FOOTER -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>📚 CMMS</h3>
-                <p>The complete academic management system for modern students.</p>
+                <h3>Product</h3>
+                <a href="#features">Features</a>
+                <a href="#benefits">Benefits</a>
+                <a href="register.php">Get Started</a>
+                <a href="index.html">Documentation</a>
             </div>
             <div class="footer-section">
-                <h3>Product</h3>
-                <a href="#">Features</a>
-                <a href="#">Pricing</a>
-                <a href="#">Security</a>
+                <h3>Resources</h3>
+                <a href="login.php">Student Portal</a>
+                <a href="login.php">Admin Panel</a>
+                <a href="index.html">Help Center</a>
+                <a href="index.html">Security</a>
             </div>
             <div class="footer-section">
                 <h3>Company</h3>
-                <a href="#">About Us</a>
-                <a href="#">Blog</a>
-                <a href="#">Contact</a>
+                <a href="index.html">About Us</a>
+                <a href="index.html">Blog</a>
+                <a href="index.html">Contact</a>
             </div>
             <div class="footer-section">
                 <h3>Legal</h3>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
+                <a href="index.html">Privacy Policy</a>
+                <a href="index.html">Terms of Service</a>
+                <a href="index.html">Cookie Policy</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1017,7 +1044,7 @@
     <script>
         // Smooth scroll behavior
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -1031,10 +1058,10 @@
 
         // Add hover effects to buttons
         document.querySelectorAll('.btn, .feature-card').forEach(el => {
-            el.addEventListener('mouseenter', function() {
+            el.addEventListener('mouseenter', function () {
                 this.style.transform = `translateY(-3px)`;
             });
-            el.addEventListener('mouseleave', function() {
+            el.addEventListener('mouseleave', function () {
                 this.style.transform = `translateY(0)`;
             });
         });
@@ -1045,7 +1072,7 @@
             rootMargin: '0px 0px -100px 0px'
         };
 
-        const observer = new IntersectionObserver(function(entries) {
+        const observer = new IntersectionObserver(function (entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
@@ -1062,4 +1089,5 @@
         });
     </script>
 </body>
+
 </html>

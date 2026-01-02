@@ -73,24 +73,11 @@ include 'includes/header.php';
                         <p class="field-error" data-error-for="email"></p>
                     </div>
 
-                    <!-- Role Selection -->
-                    <div class="form-group">
-                        <label for="role">I am a...</label>
-                        <div class="field-wrapper">
-                            <select id="role" name="role" required>
-                                <option value="" disabled selected>Select role</option>
-                                <option value="student">Student</option>
-                                <option value="admin">Administrator</option>
-                            </select>
-                        </div>
-                        <p class="field-error" data-error-for="role"></p>
-                    </div>
-
                     <!-- University Field -->
-                    <div class="form-group" id="university-group" style="display:none;">
+                    <div class="form-group">
                         <label for="university">University</label>
                         <div class="field-wrapper">
-                            <input id="university" type="text" name="university" placeholder="e.g. Harvard University" />
+                            <input id="university" type="text" name="university" placeholder="e.g. BRAC University" required />
                         </div>
                         <p class="field-error" data-error-for="university"></p>
                     </div>
@@ -188,20 +175,6 @@ include 'includes/header.php';
         } else {
             fill.style.backgroundColor = 'var(--success)';
             text.textContent = 'Strong';
-        }
-    });
-
-    // Role Validation
-    const roleSelect = document.getElementById('role');
-    const universityGroup = document.getElementById('university-group');
-    
-    roleSelect.addEventListener('change', function() {
-        if (this.value === 'student') {
-            universityGroup.style.display = 'block';
-            document.getElementById('university').required = true;
-        } else {
-            universityGroup.style.display = 'none';
-            document.getElementById('university').required = false;
         }
     });
 

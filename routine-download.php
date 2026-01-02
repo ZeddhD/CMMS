@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header("Location: login.html");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
     exit();
 }
 ?>
@@ -32,7 +32,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
                 <h1 style="font-size:1.8rem; margin-bottom:0.5rem;">📅 Class Schedule</h1>
                 <p style="color:var(--text-muted);">View your weekly class routine.</p>
             </div>
-            <button class="btn btn-primary" onclick="window.print()">🖨️ Print Routine</button>
+            <a href="backend/download-routine.php" class="btn btn-primary">📥 Download Routine</a>
         </div>
 
         <div class="content-section">
@@ -62,8 +62,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
                             WHERE e.StudentID = ?
                             ORDER BY 
                                 CASE cs.DayOfWeek
-                                    WHEN 'Mon' THEN 1 WHEN 'Tue' THEN 2 WHEN 'Wed' THEN 3 
-                                    WHEN 'Thu' THEN 4 WHEN 'Fri' THEN 5 WHEN 'Sat' THEN 6 WHEN 'Sun' THEN 7
+                                    WHEN 'Sat' THEN 1 WHEN 'Sun' THEN 2 WHEN 'Mon' THEN 3 
+                                    WHEN 'Tue' THEN 4 WHEN 'Wed' THEN 5 WHEN 'Thu' THEN 6 WHEN 'Fri' THEN 7
                                 END,
                                 cs.StartTime
                         ";

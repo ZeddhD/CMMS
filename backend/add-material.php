@@ -13,16 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $courseCode = $_POST['course_code'] ?? '';
     $userId = $_SESSION['user_id'];
     $url_or_path = '';
+    $return_url = $_POST['return_url'] ?? '../study-material.php';
 
     if (empty($title) || empty($type)) {
-        header("Location: ../study-material.php?error=missing_fields");
+        header("Location: $return_url?error=missing_fields");
         exit();
     }
 
     // Lookup CourseID if course code provided
     $courseId = null;
     if (!empty($courseCode)) {
-        $stmt = $pdo->prepare("SELECT CourseID FROM course WHERE CourseCode = ?");
+        $stmt = $pdo->prepare("SELECT CourseID FROM COURSE WHERE CourseCode = ?");
         $stmt->execute([$courseCode]);
         $course = $stmt->fetch();
         if ($course) {
@@ -33,50 +34,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($type === 'Link') {
         $url_or_path = $_POST['link_url'] ?? '';
         if (!filter_var($url_or_path, FILTER_VALIDATE_URL)) {
-             header("Location: ../study-material.php?error=invalid_url");
+             header("Location: $return_url?error=invalid_url");
              exit();
         }
     } else {
-        // File Upload
-        if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] === UPLOAD_ERR_OK) {
+        // File Upload - check both field names
+        $fileField = isset($_FILES['file_upload']) ? 'file_upload' : 'file';
+        
+        if (isset($_FILES[$fileField]) && $_FILES[$fileField]['error'] === UPLOAD_ERR_OK) {
             $uploadDir = '../uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
 
-            $fileName = basename($_FILES['file_upload']['name']);
+            $fileName = basename($_FILES[$fileField]['name']);
             // Safe filename
             $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '', $fileName);
             $targetPath = $uploadDir . time() . '_' . $fileName;
             
-            // Validate file type
-            $allowedTypes = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'doc', 'docx', 'ppt', 'pptx', 'txt'];
+            // Allow any file type - no validation
             $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-            if (!in_array($fileExt, $allowedTypes)) {
-                header("Location: ../study-material.php?error=invalid_type");
-                exit();
-            }
-
-            if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $targetPath)) {
+            if (move_uploaded_file($_FILES[$fileField]['tmp_name'], $targetPath)) {
                 $url_or_path = 'uploads/' . basename($targetPath); // Store relative path
             } else {
-                header("Location: ../study-material.php?error=upload_failed");
+                header("Location: $return_url?error=upload_failed");
                 exit();
             }
         } else {
-            header("Location: ../study-material.php?error=no_file");
+            // Check if file was uploaded but with error
+            $errorCode = $_FILES[$fileField]['error'] ?? UPLOAD_ERR_NO_FILE;
+            header("Location: $return_url?error=no_file&code=$errorCode");
             exit();
         }
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO study_material (StudentID, CourseID, Title, Type, URL_or_Path) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO STUDY_MATERIAL (StudentID, CourseID, Title, MaterialType, URL_or_Path, UploadDate) VALUES (?, ?, ?, ?, ?, CURDATE())");
         $stmt->execute([$userId, $courseId, $title, $type, $url_or_path]);
-        header("Location: ../study-material.php?success=uploaded");
+        
+        header("Location: $return_url?success=uploaded");
     } catch (PDOException $e) {
-         // header("Location: ../study-material.php?error=db_error");
-          echo $e->getMessage();
+        header("Location: $return_url?error=database");
+        exit();
     }
 }
 ?>
