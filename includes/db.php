@@ -1,13 +1,20 @@
 <?php
-// Simply include the existing backend/db.php for now, or we can copy it.
-// To be safe and keep single source of truth, let's require the original one.
-// But we need to handle path resolution since this file might be included from root or subfolders.
+/**
+ * Database Connection - Single Source of Truth
+ * Use PDO for all database operations
+ */
 
-$db_path = __DIR__ . '/../backend/db.php';
-if (file_exists($db_path)) {
-    require_once $db_path;
-} else {
-    // Fallback if structure changes - likely won't trigger if structure is constant
-    die("Database configuration file not found.");
+$host = 'localhost';
+$dbname = 'cmms';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+} catch(PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 ?>

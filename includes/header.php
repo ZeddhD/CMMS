@@ -4,9 +4,8 @@ function isActive($page) {
     return basename($_SERVER['PHP_SELF']) == $page ? 'active' : '';
 }
 
-// Session check logic if needed globally, but typically handled per page
-// Ensuring $student_name is set for the header
-$header_name = $_SESSION['name'] ?? 'Guest';
+// Get user name from standardized session variables
+$header_name = $_SESSION['student_name'] ?? $_SESSION['admin_name'] ?? 'Guest';
 $header_initials = strtoupper(substr($header_name, 0, 2));
 ?>
 <!DOCTYPE html>
@@ -29,13 +28,13 @@ $header_initials = strtoupper(substr($header_name, 0, 2));
         <div class="header-container">
             <a href="index.html" class="logo">CMMS</a>
             <div class="header-right">
-                <nav class="header-nav" id="desktop-nav">
+                <nav class="header-nav">
                     <?php if(isset($_SESSION['user_id'])): ?>
                         <a href="student-dashboard.php" class="<?php echo isActive('student-dashboard.php'); ?>">Dashboard</a>
                         <a href="study-material.php" class="<?php echo isActive('study-material.php'); ?>">Resources</a>
                         <a href="calendar.php" class="<?php echo isActive('calendar.php'); ?>">Calendar</a>
                         <a href="routine-download.php" class="<?php echo isActive('routine-download.php'); ?>">Routine</a>
-                        <a href="progress.php" class="<?php echo isActive('progress.php'); ?>">Progress</a>
+                        <a href="backend/logout.php" style="color:var(--error);">Logout</a>
                     <?php else: ?>
                         <a href="index.html" class="<?php echo isActive('index.html'); ?>">Home</a>
                         <a href="login.php" class="<?php echo isActive('login.php'); ?>">Login</a>

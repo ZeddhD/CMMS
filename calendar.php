@@ -3,7 +3,7 @@ session_start();
 require 'backend/db.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 
@@ -59,17 +59,14 @@ $sql_sessions = "
     JOIN CLASS_SESSION cs ON e.EnrollmentID = cs.EnrollmentID
     WHERE e.StudentID = ?
 ";
-$stmt = $conn->prepare($sql_sessions);
-$stmt->bind_param("i", $student_id);
-if ($stmt->execute()) {
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-        // DB DayOfWeek: Sat, Sun, Mon, Tue, Wed, Thu, Fri
-        // PHP 'D' format returns same 3-letter abbreviations
-        $weekly_sessions[$row['DayOfWeek']][] = $row;
-    }
+$stmt = $pdo->prepare($sql_sessions);
+$stmt->execute([$student_id]);
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+foreach ($result as $row) {
+    // DB DayOfWeek: Sat, Sun, Mon, Tue, Wed, Thu, Fri
+    // PHP 'D' format returns same 3-letter abbreviations
+    $weekly_sessions[$row['DayOfWeek']][] = $row;
 }
-$stmt->close();
 
 // 2. Scheduled Quizzes/Assessments for this specific month
 $assessments_by_date = [];
@@ -93,7 +90,6 @@ $sql_assessments = "
 // Note: Ensure AssessmentType matches exact DB string (case sensitive?)
 // Schema defines ENUM('quiz', 'assignment', 'exam'). Let's match lowercase 'quiz'.
 
-$stmt2 = $conn->prepare($sql_assessments);
 // Actually, check if it's 'quiz' or 'Quiz'. The schema said 'quiz'. Let's relax it or use lowercase.
 // But earlier inserts might have used 'Quiz'.
 // Let's adjust query to be safe or just fetch 'quiz'. 
@@ -114,15 +110,12 @@ $sql_assessments = "
     AND (a.AssessmentType = 'quiz' OR a.AssessmentType = 'Quiz')
 ";
 
-$stmt2 = $conn->prepare($sql_assessments);
-$stmt2->bind_param("iss", $student_id, $start_date_str, $end_date_str);
-if ($stmt2->execute()) {
-    $result2 = $stmt2->get_result();
-    while ($row = $result2->fetch_assoc()) {
-        $assessments_by_date[$row['DueDate']][] = $row;
-    }
+$stmt2 = $pdo->prepare($sql_assessments);
+$stmt2->execute([$student_id, $start_date_str, $end_date_str]);
+$result2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+foreach ($result2 as $row) {
+    $assessments_by_date[$row['DueDate']][] = $row;
 }
-$stmt2->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">

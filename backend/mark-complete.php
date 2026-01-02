@@ -1,39 +1,29 @@
 <?php
 session_start();
-require 'db.php';
+require '../includes/db.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    die("Unauthorized");
-}
+$assessment_id = $_POST['assessment_id'] ?? null;
+$return_url = $_POST['return_url'] ?? '../student-dashboard.php';
+$student_id = $_SESSION['student_id'] ?? null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $assessment_id = $_POST['assessment_id'] ?? null;
-    $student_id = $_SESSION['user_id'];
-
-    if (!$assessment_id) {
-        die("Invalid request.");
-    }
-
-    // Verify the assessment belongs to the student
+if ($assessment_id && $student_id) {
+    // Verify ownership - ensure this assessment belongs to this student's enrollment
     $stmt = $pdo->prepare("
-        SELECT A.AssessmentID
-        FROM ASSESSMENT A
-        JOIN ENROLLMENT E ON A.EnrollmentID = E.EnrollmentID
-        WHERE A.AssessmentID = ? AND E.StudentID = ?
+        SELECT a.AssessmentID 
+        FROM ASSESSMENT a
+        JOIN ENROLLMENT e ON a.EnrollmentID = e.EnrollmentID
+        WHERE a.AssessmentID = ? AND e.StudentID = ?
     ");
     $stmt->execute([$assessment_id, $student_id]);
-    if (!$stmt->fetch()) {
-        die("Assessment not found or not yours.");
+    
+    if ($stmt->fetch()) {
+        // Update status to completed
+        $stmt = $pdo->prepare("UPDATE ASSESSMENT SET Status = 'completed' WHERE AssessmentID = ?");
+        $stmt->execute([$assessment_id]);
     }
-
-    // Update status to completed
-    $stmt = $pdo->prepare("UPDATE ASSESSMENT SET Status = 'completed' WHERE AssessmentID = ?");
-    $stmt->execute([$assessment_id]);
-
-    // Redirect back with success
-    header("Location: view-progress.php?updated=1");
-    exit;
-} else {
-    die("Invalid request.");
 }
+
+// Redirect back to where we came from
+header("Location: " . $return_url);
+exit;
 ?>

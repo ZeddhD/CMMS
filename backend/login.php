@@ -12,9 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Hardcoded admin login
     if ($email === 'admin' && $password === '1234') {
-        $_SESSION['admin_id'] = 'admin';
+        $_SESSION['user_id']    = 'admin';
+        $_SESSION['admin_id']   = 'admin';
         $_SESSION['admin_name'] = 'Admin';
-        $_SESSION['role'] = 'admin';
+        $_SESSION['role']       = 'admin';
         header("Location: ../admin-dashboard.php");
         exit;
     }
@@ -52,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // If neither student nor admin matched:
-    header("Location: ../login.html?error=invalid");
+    header("Location: ../login.php?error=invalid");
     exit;
 } else {
     echo "Invalid request.";
