@@ -1,0 +1,23 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Database
+*.sql
+!sql/schema.sql
+
+# Temp files
+*.tmp
+*.bak

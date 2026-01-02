@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule - CMMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --bg-card: #1e293b;
+            --primary-cyan: #06b6d4;
+            --primary-cyan-bright: #00d4ff;
+            --purple-accent: #7c3aed;
+            --purple-light: #a855f7;
+            --text-light: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo::before {
+            content: "📚";
+            font-size: 1.8rem;
+            background: none;
+            -webkit-text-fill-color: unset;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .header-nav a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.5);
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-left: 1.5rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .user-info span {
+            display: block;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(124, 58, 237, 0.15));
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: var(--border-radius);
+            padding: 3rem 2.5rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 0.6s ease-out;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.15), inset 0 0 30px rgba(6, 182, 212, 0.08);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-section h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-section h1 span {
+            color: var(--primary-cyan-bright);
+            font-weight: 800;
+        }
+
+        .welcome-section p {
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 500;
+            opacity: 1;
+            line-height: 1.5;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 0.6s ease-out 0.1s both;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-light);
+            min-width: 100px;
+        }
+
+        .filter-select {
+            padding: 0.6rem 1rem;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .filter-select:hover,
+        .filter-select:focus {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Schedule Container */
+        .schedule-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Weekly Schedule */
+        .schedule-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            animation: slideInUp 0.6s ease-out 0.1s both;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+
+        .schedule-table thead {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(124, 58, 237, 0.15));
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .schedule-table th {
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary-cyan-bright);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .schedule-table th:last-child {
+            border-right: none;
+        }
+
+        .schedule-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .schedule-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        .schedule-table td {
+            padding: 1.5rem;
+            border-right: 1px solid var(--border-color);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .schedule-table td:last-child {
+            border-right: none;
+        }
+
+        /* Cell Content */
+        .time-cell {
+            font-weight: 700;
+            color: var(--primary-cyan);
+            font-size: 1.05rem;
+        }
+
+        .course-cell {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .course-code {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Mode Badge */
+        .mode-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border: 1px solid;
+            transition: var(--transition);
+        }
+
+        .mode-online {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .mode-offline {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .schedule-table tbody tr:hover .mode-badge {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        /* Room Cell */
+        .room-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .room-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Empty Cell */
+        .empty-cell {
+            color: var(--text-muted);
+            text-align: center;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Cards View - Alternative */
+        .schedule-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .session-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .session-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.15), transparent);
+            transition: left 0.6s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .session-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-cyan);
+            box-shadow: 0 20px 50px rgba(6, 182, 212, 0.3), inset 0 0 20px rgba(6, 182, 212, 0.08);
+        }
+
+        .session-card:hover::before {
+            left: 100%;
+        }
+
+        .session-header {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .session-day {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .session-time {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 0.3rem;
+        }
+
+        .session-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .session-course {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .session-code {
+            font-size: 0.8rem;
+            color: var(--primary-cyan);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .session-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .detail-icon {
+            font-size: 1.1rem;
+        }
+
+        .detail-text {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .session-footer {
+            position: relative;
+            z-index: 1;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(6, 182, 212, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reminder-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .reminder-btn:hover {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            justify-content: flex-end;
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary-cyan);
+            border-color: var(--primary-cyan);
+            color: var(--bg-dark);
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-title span {
+            font-size: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .schedule-table {
+                font-size: 0.9rem;
+            }
+
+            .schedule-table th,
+            .schedule-table td {
+                padding: 1rem;
+            }
+
+            main {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .schedule-wrapper {
+                overflow-x: auto;
+            }
+
+            .schedule-table {
+                min-width: 600px;
+            }
+
+            .schedule-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-container {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .header-right {
+                gap: 1rem;
+                order: 3;
+                width: 100%;
+            }
+
+            .header-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .user-profile {
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+                padding-left: 0;
+                padding-top: 1rem;
+                width: 100%;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .view-toggle {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">CMMS</a>
+            <div class="header-right">
+                <nav class="header-nav">
+                    <a href="student.html">Dashboard</a>
+                    <button class="nav-btn" onclick="window.location.href='study-material.html';">📚 Resources</button>
+                    <a href="class_schedule.html" style="color: var(--primary-cyan); font-weight: 600;">Schedule</a>
+                </nav>
+                <div class="user-profile">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <span>John Doe</span>
+                        <p>Student</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>📅 <span>Class Schedule</span></h1>
+            <p>View your weekly class sessions with course details, timings, and locations.</p>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="filter-label">📚 Course:</label>
+                <select class="filter-select">
+                    <option value="">All Courses</option>
+                    <option value="cs201">CS 201 - Data Structures</option>
+                    <option value="wdes101">WDES 101 - Web Design</option>
+                    <option value="chem110">CHEM 110 - Chemistry</option>
+                    <option value="cs301">CS 301 - Algorithms</option>
+                    <option value="phys150">PHYS 150 - Physics</option>
+                    <option value="lit200">LIT 200 - Literature</option>
+                </select>
+
+                <label class="filter-label" style="margin-left: 2rem;">🌐 Mode:</label>
+                <select class="filter-select">
+                    <option value="">All Modes</option>
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="toggle-btn active" onclick="toggleView('table')">📊 Table View</button>
+            <button class="toggle-btn" onclick="toggleView('cards')">🎴 Card View</button>
+        </div>
+
+        <!-- Table View -->
+        <div id="tableView" class="schedule-container" style="display: block;">
+            <div class="section-title">
+                <span>📋</span>
+                Weekly Schedule
+            </div>
+
+            <div class="schedule-wrapper">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>📅 Day</th>
+                            <th>⏰ Time</th>
+                            <th>📚 Course</th>
+                            <th>🌐 Mode</th>
+                            <th>📍 Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Monday -->
+                        <tr>
+                            <td><strong>Monday</strong></td>
+                            <td class="time-cell">09:00 - 10:30</td>
+                            <td>
+                                <div class="course-cell">Data Structures</div>
+                                <div class="course-code">CS 201</div>
+                            </td>
+                            <td><span class="mode-badge mode-online">Online</span></td>
+                            <td class="room-cell"><span class="room-icon">🖥️</span> <span>Zoom Room 5</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Monday</strong></td>
+                            <td class="time-cell">11:00 - 12:30</td>
+                            <td>
+                                <div class="course-cell">Web Design</div>
+                                <div class="course-code">WDES 101</div>
+                            </td>
+                            <td><span class="mode-badge mode-offline">Offline</span></td>
+                            <td class="room-cell"><span class="room-icon">🏫</span> <span>Lab-302</span></td>
+                        </tr>
+
+                        <!-- Tuesday -->
+                        <tr>
+                            <td><strong>Tuesday</strong></td>
+                            <td class="time-cell">08:00 - 09:30</td>
+                            <td>
+                                <div class="course-cell">General Chemistry</div>
+                                <div class="course-code">CHEM 110</div>
+                            </td>
+                            <td><span class="mode-badge mode-offline">Offline</span></td>
+                            <td class="room-cell"><span class="room-icon">🧪</span> <span>Lab-105</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tuesday</strong></td>
+                            <td class="time-cell">14:00 - 15:30</td>
+                            <td>
+                                <div class="course-cell">Algorithms</div>
+                                <div class="course-code">CS 301</div>
+                            </td>
+                            <td><span class="mode-badge mode-online">Online</span></td>
+                            <td class="room-cell"><span class="room-icon">🖥️</span> <span>Google Meet</span></td>
+                        </tr>
+
+                        <!-- Wednesday -->
+                        <tr>
+                            <td><strong>Wednesday</strong></td>
+                            <td class="time-cell">10:00 - 11:30</td>
+                            <td>
+                                <div class="course-cell">Physics</div>
+                                <div class="course-code">PHYS 150</div>
+                            </td>
+                            <td><span class="mode-badge mode-offline">Offline</span></td>
+                            <td class="room-cell"><span class="room-icon">🏫</span> <span>Room-201</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Wednesday</strong></td>
+                            <td class="time-cell">13:00 - 14:30</td>
+                            <td>
+                                <div class="course-cell">Data Structures</div>
+                                <div class="course-code">CS 201</div>
+                            </td>
+                            <td><span class="mode-badge mode-online">Online</span></td>
+                            <td class="room-cell"><span class="room-icon">🖥️</span> <span>Zoom Room 5</span></td>
+                        </tr>
+
+                        <!-- Thursday -->
+                        <tr>
+                            <td><strong>Thursday</strong></td>
+                            <td class="time-cell">09:00 - 10:30</td>
+                            <td>
+                                <div class="course-cell">Literature</div>
+                                <div class="course-code">LIT 200</div>
+                            </td>
+                            <td><span class="mode-badge mode-offline">Offline</span></td>
+                            <td class="room-cell"><span class="room-icon">📖</span> <span>Room-305</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Thursday</strong></td>
+                            <td class="time-cell">14:00 - 15:30</td>
+                            <td>
+                                <div class="course-cell">Web Design</div>
+                                <div class="course-code">WDES 101</div>
+                            </td>
+                            <td><span class="mode-badge mode-online">Online</span></td>
+                            <td class="room-cell"><span class="room-icon">🖥️</span> <span>Teams Link</span></td>
+                        </tr>
+
+                        <!-- Friday -->
+                        <tr>
+                            <td><strong>Friday</strong></td>
+                            <td class="time-cell">10:00 - 11:30</td>
+                            <td>
+                                <div class="course-cell">Algorithms</div>
+                                <div class="course-code">CS 301</div>
+                            </td>
+                            <td><span class="mode-badge mode-offline">Offline</span></td>
+                            <td class="room-cell"><span class="room-icon">🏫</span> <span>Lab-301</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Friday</strong></td>
+                            <td class="time-cell">13:00 - 14:30</td>
+                            <td>
+                                <div class="course-cell">Chemistry Lab</div>
+                                <div class="course-code">CHEM 110</div>
+                            </td>
+                            <td><span class="mode-badge mode-offline">Offline</span></td>
+                            <td class="room-cell"><span class="room-icon">🧪</span> <span>Lab-105</span></td>
+                        </tr>
+
+                        <!-- Saturday -->
+                        <tr>
+                            <td><strong>Saturday</strong></td>
+                            <td class="time-cell">11:00 - 12:30</td>
+                            <td>
+                                <div class="course-cell">Physics Lab</div>
+                                <div class="course-code">PHYS 150</div>
+                            </td>
+                            <td><span class="mode-badge mode-offline">Offline</span></td>
+                            <td class="room-cell"><span class="room-icon">🏫</span> <span>Lab-201</span></td>
+                        </tr>
+
+                        <!-- Sunday -->
+                        <tr>
+                            <td class="empty-cell">Sunday</td>
+                            <td class="empty-cell" colspan="4">No Classes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Card View -->
+        <div id="cardView" style="display: none;">
+            <div class="section-title">
+                <span>🎴</span>
+                Upcoming Classes
+            </div>
+
+            <div class="schedule-cards">
+                <!-- Monday Session 1 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Monday</div>
+                        <div class="session-time">09:00 - 10:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Data Structures</div>
+                        <div class="session-code">CS 201</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-online">Online</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🖥️</span>
+                                <span class="detail-text">Zoom Room 5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Monday Session 2 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Monday</div>
+                        <div class="session-time">11:00 - 12:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Web Design</div>
+                        <div class="session-code">WDES 101</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-offline">Offline</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🏫</span>
+                                <span class="detail-text">Lab-302</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Tuesday Session 1 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Tuesday</div>
+                        <div class="session-time">08:00 - 09:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">General Chemistry</div>
+                        <div class="session-code">CHEM 110</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-offline">Offline</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🧪</span>
+                                <span class="detail-text">Lab-105</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Tuesday Session 2 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Tuesday</div>
+                        <div class="session-time">14:00 - 15:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Algorithms</div>
+                        <div class="session-code">CS 301</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-online">Online</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🖥️</span>
+                                <span class="detail-text">Google Meet</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Wednesday Session 1 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Wednesday</div>
+                        <div class="session-time">10:00 - 11:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Physics</div>
+                        <div class="session-code">PHYS 150</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-offline">Offline</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🏫</span>
+                                <span class="detail-text">Room-201</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Wednesday Session 2 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Wednesday</div>
+                        <div class="session-time">13:00 - 14:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Data Structures</div>
+                        <div class="session-code">CS 201</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-online">Online</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🖥️</span>
+                                <span class="detail-text">Zoom Room 5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Thursday Session 1 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Thursday</div>
+                        <div class="session-time">09:00 - 10:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Literature</div>
+                        <div class="session-code">LIT 200</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-offline">Offline</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">📖</span>
+                                <span class="detail-text">Room-305</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Thursday Session 2 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Thursday</div>
+                        <div class="session-time">14:00 - 15:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Web Design</div>
+                        <div class="session-code">WDES 101</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-online">Online</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🖥️</span>
+                                <span class="detail-text">Teams Link</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Friday Session 1 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Friday</div>
+                        <div class="session-time">10:00 - 11:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Algorithms</div>
+                        <div class="session-code">CS 301</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-offline">Offline</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🏫</span>
+                                <span class="detail-text">Lab-301</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Friday Session 2 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Friday</div>
+                        <div class="session-time">13:00 - 14:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Chemistry Lab</div>
+                        <div class="session-code">CHEM 110</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-offline">Offline</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🧪</span>
+                                <span class="detail-text">Lab-105</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+
+                <!-- Saturday -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-day">📅 Saturday</div>
+                        <div class="session-time">11:00 - 12:30</div>
+                    </div>
+                    <div class="session-content">
+                        <div class="session-course">Physics Lab</div>
+                        <div class="session-code">PHYS 150</div>
+                        <div class="session-details">
+                            <div class="detail">
+                                <span class="detail-icon">🌐</span>
+                                <span class="mode-badge mode-offline">Offline</span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-icon">🏫</span>
+                                <span class="detail-text">Lab-201</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-footer">
+                        <button class="reminder-btn">🔔 Set Reminder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle between table and card views
+        function toggleView(view) {
+            const tableView = document.getElementById('tableView');
+            const cardView = document.getElementById('cardView');
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+
+            if (view === 'table') {
+                tableView.style.display = 'block';
+                cardView.style.display = 'none';
+                toggleBtns[0].classList.add('active');
+                toggleBtns[1].classList.remove('active');
+            } else {
+                tableView.style.display = 'none';
+                cardView.style.display = 'block';
+                toggleBtns[0].classList.remove('active');
+                toggleBtns[1].classList.add('active');
+            }
+        }
+
+        // Reminder button functionality
+        document.querySelectorAll('.reminder-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const courseCard = this.closest('.session-card');
+                const courseName = courseCard.querySelector('.session-course').textContent;
+                alert(`Reminder set for ${courseName}`);
+            });
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', function() {
+                console.log('Filter changed:', this.value);
+                // Add actual filter logic here
+            });
+        });
+
+        // Row hover effect for table
+        document.querySelectorAll('.schedule-table tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(6, 182, 212, 0.1)';
+            });
+            row.addEventListener('mouseleave', function() {
+                this.style.background = '';
+            });
+        });
+    </script>
+</body>
+</html>
