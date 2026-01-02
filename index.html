@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMMS - Course Material Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --bg-card: #1e293b;
+            --primary-cyan: #06b6d4;
+            --primary-cyan-bright: #00d4ff;
+            --purple-accent: #7c3aed;
+            --purple-light: #a855f7;
+            --text-light: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+            --error: #ef4444;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo::before {
+            content: "📚";
+            font-size: 1.8rem;
+            background: none;
+            -webkit-text-fill-color: unset;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--purple-accent));
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            color: white !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+            transition: var(--transition);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-weight: 800;
+        }
+
+        .hero-content h1 .gradient {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            color: white;
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.2);
+        }
+
+        /* ===== HERO VISUAL - FLOATING CARDS ===== */
+        .hero-visual {
+            position: relative;
+            height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .floating-cards-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            animation: float 3s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: var(--transition);
+            width: 180px;
+            height: 180px;
+        }
+
+        .floating-card:hover {
+            box-shadow: 0 20px 50px rgba(6, 182, 212, 0.4);
+            border-color: var(--primary-cyan);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(124, 58, 237, 0.1));
+        }
+
+        /* Card 1 - Top Left */
+        .card-1 {
+            top: 20px;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .card-1:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Card 2 - Bottom Right */
+        .card-2 {
+            bottom: 40px;
+            right: 5%;
+            animation-delay: 1s;
+        }
+
+        .card-2:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Card 3 - Center */
+        .card-3 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 2s;
+            z-index: 10;
+        }
+
+        .card-3:hover {
+            transform: translate(-50%, calc(-50% - 8px));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .card-1 {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .card-2 {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .card-3 {
+            animation: floatCenter 3s ease-in-out infinite;
+        }
+
+        @keyframes floatCenter {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, calc(-50% - 15px)); }
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .card-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Enhanced Section Title with Hover Effect */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(124, 58, 237, 0.08));
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: slideInUp 0.8s ease-out;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .section-title:hover {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.18), rgba(124, 58, 237, 0.18));
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.3), inset 0 0 40px rgba(6, 182, 212, 0.1);
+            transform: translateY(-8px) scale(1.01);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-cyan), transparent);
+            transition: var(--transition);
+            box-shadow: 0 0 0 rgba(6, 182, 212, 0);
+        }
+
+        .section-title:hover::before {
+            background: linear-gradient(90deg, transparent, var(--primary-cyan-bright), transparent);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--purple-accent), transparent);
+            transition: var(--transition);
+            box-shadow: 0 0 0 rgba(124, 58, 237, 0);
+        }
+
+        .section-title:hover::after {
+            background: linear-gradient(90deg, transparent, var(--purple-light), transparent);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.6);
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 20px;
+            color: var(--primary-cyan);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .section-title:hover .section-badge {
+            background: rgba(6, 182, 212, 0.25);
+            border-color: var(--primary-cyan-bright);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+            transform: scale(1.05);
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            transition: var(--transition);
+        }
+
+        .section-title:hover h2 {
+            background: linear-gradient(135deg, var(--primary-cyan-bright), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            line-height: 1.8;
+            transition: var(--transition);
+        }
+
+        .section-title:hover p {
+            color: var(--text-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--purple-accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(6, 182, 212, 0.2);
+            border-color: var(--primary-cyan);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .feature-card .arrow {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary-cyan);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ===== BENEFITS SECTION ===== */
+        .benefits {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 4rem;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .benefits-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .benefits-list {
+            list-style: none;
+        }
+
+        .benefits-list li {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: var(--text-light);
+            align-items: flex-start;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .benefits-visual {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(124, 58, 237, 0.1));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .benefits-visual::before {
+            content: '📊';
+            font-size: 8rem;
+            opacity: 0.3;
+        }
+
+        /* ===== TRUST SECTION ===== */
+        .trust {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .trust h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+        }
+
+        .trust-badges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .trust-badge {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .trust-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.2);
+            border-color: var(--primary-cyan);
+        }
+
+        .trust-badge-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .trust-badge h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .trust-badge p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            max-width: 1200px;
+            margin: 6rem auto 3rem;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--purple-accent));
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3);
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-section .btn {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-cyan);
+            margin: 0 0.5rem;
+            font-weight: 600;
+        }
+
+        .cta-section .btn:hover {
+            background: white;
+            transform: translateY(-3px);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--text-muted);
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .footer-section a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: #64748b;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-content {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .hero-visual {
+            animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+
+        .feature-card {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+                margin: 2rem auto 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-visual {
+                height: 400px;
+            }
+
+            .floating-card {
+                width: 150px;
+                height: 150px;
+                padding: 1.5rem 1rem;
+            }
+
+            .card-1 {
+                left: 0%;
+            }
+
+            .card-2 {
+                right: 0%;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-section {
+                padding: 2rem 1rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                padding: 2rem 1.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">CMMS</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html" class="cta-btn">Get Started</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>
+                Master Your <span class="gradient">Academic Journey</span>
+            </h1>
+            <p>
+                A powerful tool to manage your classes, quizzes, assignments, and routines — all in one intelligent dashboard. Stay organized, meet deadlines, and focus on what matters: learning.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">
+                    ✨ Start for Free
+                </button>
+                <button class="btn btn-secondary">
+                    📹 Watch Demo
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="floating-cards-container">
+                <div class="floating-card card-1">
+                    <div class="card-icon">📚</div>
+                    <div class="card-number">12</div>
+                    <div class="card-text">Active Courses</div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="card-icon">✅</div>
+                    <div class="card-number">8/10</div>
+                    <div class="card-text">Tasks Completed</div>
+                </div>
+                <div class="floating-card card-3">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-number">92%</div>
+                    <div class="card-text">Average Score</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features" id="features">
+        <div class="section-title">
+            <span class="section-badge">✨ Core Features</span>
+            <h2>Everything You Need in One Place</h2>
+            <p>Comprehensive tools designed to streamline your academic workflow and boost productivity</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Course Enrollment</h3>
+                <p>Easily enroll in courses, set up quizzes, assignments, and track your academic progress with intuitive controls.</p>
+                <span class="arrow">Learn more →</span>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3>Schedule Management</h3>
+                <p>Manage your class routines with detailed session information and download printable schedules on demand.</p>
+                <span class="arrow">Learn more →</span>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Progress Tracking</h3>
+                <p>Monitor your performance with visual progress bars and intelligent deadline management tools.</p>
+                <span class="arrow">Learn more →</span>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📂</div>
+                <h3>Resource Library</h3>
+                <p>Upload and share study materials, add assessments, and organize everything in a centralized dashboard.</p>
+                <span class="arrow">Learn more →</span>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile Access</h3>
+                <p>Access your courses and assignments anytime, anywhere with our fully responsive mobile platform.</p>
+                <span class="arrow">Learn more →</span>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure & Private</h3>
+                <p>Enterprise-grade security ensures your academic data and assignments remain protected at all times.</p>
+                <span class="arrow">Learn more →</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFITS SECTION -->
+    <section class="benefits" id="benefits">
+        <div class="benefits-content">
+            <div>
+                <h2>Why Use CMMS?</h2>
+                <ul class="benefits-list">
+                    <li><strong>Unified Dashboard:</strong> Everything you need in one place</li>
+                    <li><strong>Smart Notifications:</strong> Never miss a deadline again</li>
+                    <li><strong>Performance Analytics:</strong> Visual insights into your progress</li>
+                    <li><strong>Collaboration Tools:</strong> Study together with classmates</li>
+                    <li><strong>24/7 Support:</strong> Help when you need it</li>
+                    <li><strong>Free to Start:</strong> No credit card required</li>
+                </ul>
+            </div>
+
+            <div class="benefits-visual"></div>
+        </div>
+    </section>
+
+    <!-- TRUST SECTION -->
+    <section class="trust">
+        <h2>Trusted by Students & Universities</h2>
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <div class="trust-badge-icon">🎓</div>
+                <h3>50K+ Students</h3>
+                <p>Active users across multiple universities</p>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">🏆</div>
+                <h3>#1 Rated</h3>
+                <p>Best academic management system 2025</p>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">⚡</div>
+                <h3>99.9% Uptime</h3>
+                <p>Reliable service you can count on</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <h2>Ready to Transform Your Academic Life?</h2>
+        <p>Join thousands of students who are already managing their courses more effectively</p>
+        <button class="btn btn-primary">Get Started Now</button>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>📚 CMMS</h3>
+                <p>The complete academic management system for modern students.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Product</h3>
+                <a href="#">Features</a>
+                <a href="#">Pricing</a>
+                <a href="#">Security</a>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <a href="#">About Us</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CMMS - Course Material Management System. All rights reserved. Made with ❤️ for students.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effects to buttons
+        document.querySelectorAll('.btn, .feature-card').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                this.style.transform = `translateY(-3px)`;
+            });
+            el.addEventListener('mouseleave', function() {
+                this.style.transform = `translateY(0)`;
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .trust-badge').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
