@@ -106,6 +106,31 @@ include 'includes/header.php';
 </style>
 
 <main>
+    <!-- Success/Error Messages -->
+    <?php if (isset($_GET['success'])): ?>
+        <?php if ($_GET['success'] === 'session_deleted'): ?>
+            <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success); color: var(--success); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                ✅ Class session deleted successfully!
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['error'])): ?>
+        <?php if ($_GET['error'] === 'missing_data'): ?>
+            <div style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--error); color: var(--error); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                ❌ Error: Missing required data.
+            </div>
+        <?php elseif ($_GET['error'] === 'access_denied'): ?>
+            <div style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--error); color: var(--error); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                ❌ Access denied: You don't have permission to delete this session.
+            </div>
+        <?php elseif ($_GET['error'] === 'delete_failed'): ?>
+            <div style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--error); color: var(--error); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                ❌ Failed to delete session. Please try again.
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
     <!-- Course Header -->
     <div class="course-header">
         <h1>📚 <?php echo htmlspecialchars($enrollment['CourseCode']); ?></h1>
@@ -173,11 +198,18 @@ include 'includes/header.php';
                 <p style="color:var(--text-muted); text-align:center; padding:2rem;">No class sessions added yet.</p>
             <?php else: ?>
                 <?php foreach ($sessions as $session): ?>
-                    <div class="item">
-                        <strong><?php echo htmlspecialchars($session['DayOfWeek']); ?></strong> 
-                        | <?php echo htmlspecialchars($session['StartTime']); ?> - <?php echo htmlspecialchars($session['EndTime']); ?>
-                        | Room: <?php echo htmlspecialchars($session['Room']); ?>
-                        | <span class="badge"><?php echo htmlspecialchars($session['Mode']); ?></span>
+                    <div class="item" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong><?php echo htmlspecialchars($session['DayOfWeek']); ?></strong> 
+                            | <?php echo htmlspecialchars($session['StartTime']); ?> - <?php echo htmlspecialchars($session['EndTime']); ?>
+                            | Room: <?php echo htmlspecialchars($session['Room']); ?>
+                            | <span class="badge"><?php echo htmlspecialchars($session['Mode']); ?></span>
+                        </div>
+                        <form method="POST" action="backend/delete-session.php" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete this session?');">
+                            <input type="hidden" name="session_id" value="<?php echo $session['ClassSessionID']; ?>">
+                            <input type="hidden" name="enrollment_id" value="<?php echo $enrollment_id; ?>">
+                            <button type="submit" class="btn-delete">🗑️ Delete</button>
+                        </form>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
