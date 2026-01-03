@@ -620,6 +620,46 @@ main {
     transition: var(--transition);
 }
 
+/* ===== DELETE BUTTON STYLING ===== */
+.btn-delete {
+    background: transparent;
+    border: 1px solid var(--error, #ef4444);
+    color: var(--error, #ef4444);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-delete:hover {
+    background: var(--error, #ef4444);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+.btn-delete:active {
+    transform: translateY(0);
+}
+
+/* Item list spacing adjustment */
+.item {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: var(--bg-card, rgba(255,255,255,0.05));
+    border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.item:hover {
+    border-color: rgba(6, 182, 212, 0.3);
+    transform: translateX(5px);
+}
+
 @media (max-width: 768px) {
     .auth-container {
         flex-direction: column;
